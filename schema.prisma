@@ -1,0 +1,59 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Customer {
+  id             Int      @id @default(autoincrement())
+  name           String
+  contactDetails String?
+  orders         Order[]
+}
+
+model Employee {
+  id             Int      @id @default(autoincrement())
+  name           String
+  role           String
+  contactDetails String?
+}
+
+model MenuItem {
+  id           Int      @id @default(autoincrement())
+  name         String
+  price        Float
+  availability Boolean @default(true)
+}
+
+model Order {
+  id                    Int      @id @default(autoincrement())
+  customerId            Int
+  orderName             String
+  orderTime             DateTime @default(now())
+  additionalInstructions String?
+  status                String   @default("Pending")
+  customer              Customer @relation(fields: [customerId], references: [id])
+  payments              Payment[]
+}
+
+model Payment {
+  id          Int      @id @default(autoincrement())
+  orderId     Int
+  paymentMethod String
+  status      String
+  amount      Float
+  paymentTime DateTime @default(now())
+  order       Order    @relation(fields: [orderId], references: [id])
+}
+
+model Financial {
+  id         Int      @id @default(autoincrement())
+  sales      Float
+  expenses   Float
+  profit     Float
+  reportTime DateTime @default(now())
+}
+

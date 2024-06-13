@@ -1,0 +1,12 @@
+<ul>
+  <li><a href="/">Home</a></li>
+  <% if (user) { %>
+    <li><a href="/user/profile">Profile</a></li>
+    <% if (user.role === 'ADMIN') { %>
+      <li><a href="/admin/users">Manage Users</a></li>
+    <% } %>
+  <% } else { %>
+    <li><a href="/auth/login">Login</a></li>
+    <li><a href="/auth/register">Register</a></li>
+  <% } %>
+</ul>
